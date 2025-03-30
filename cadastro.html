@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UFT-8">
+        <meta hpp-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scalre=1.0">
+        <title> Cadastro</title>
+        <link rel="stylesheet" href="stylescadastro.css">
+</head>
+<body>
+
+    <div class="form-container">
+        <h2>Cadastro de Perfil</h2>
+        <form action="#" method="POST">
+            <label for="nome">Nome:</label>
+            <input type="text" id="nome" name="nome" required>
+
+            <label for="sobrenome">Sobrenome:</label>
+            <input type="text" id="sobrenome" name="sobrenome" required>
+
+            <label for="data_nascimento">Data de Nascimento:</label>
+            <input type="date" id="data_nascimento" name="data_nascimento" required>
+
+            <label for="data_falecimento">Data de Falecimento (se aplicável):</label>
+            <input type="date" id="data_falecimento" name="data_falecimento">
+
+            <label for="cidade">Cidade:</label>
+            <input type="text" id="cidade" name="cidade" required>
+
+            <label for="estado">Estado:</label>
+            <select id="estado" name="estado" required>
+                <option value="">Selecione...</option>
+                <option value="SP">São Paulo</option>
+                <option value="RJ">Rio de Janeiro</option>
+                <option value="MG">Minas Gerais</option>
+                <option value="RS">Rio Grande do Sul</option>
+                <option value="BA">Bahia</option>
+                <!-- Adicione mais estados conforme necessário -->
+            </select>
+
+            <label for="escolaridade">Escolaridade:</label>
+            <input type="text" id="escolaridade" name="escolaridade" required>
+
+            <label for="cargo">Cargo de Destaque:</label>
+            <input type="text" id="cargo" name="cargo" required>
+
+            <label for="voluntariado">Voluntariado:</label>
+            <input type="text" id="voluntariado" name="voluntariado">
+
+            <label for="discursos">Discursos Proferidos:</label>
+            <textarea id="discursos" name="discursos" rows="3"></textarea>
+
+            <label for="depoimentos">Depoimentos de Amigos:</label>
+            <textarea id="depoimentos" name="depoimentos" rows="3"></textarea>
+
+            <button type="submit">Cadastrar</button>
+        </form>
+    </div>
+    <script type="module" src="script.js"></script>
+</body>
+</html>
