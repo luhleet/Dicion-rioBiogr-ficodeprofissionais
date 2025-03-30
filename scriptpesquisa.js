@@ -11,47 +11,33 @@ async function buscarPerfis() {
     console.log("Perfis encontrados:", data);
 }
 
-buscarPerfis();
-
-// Função para buscar perfis no Supabase
-async function buscarPerfis(query) {
-    const { data, error } = await supabase
-        .from("perfis")
+    // 🔎 Buscar no Supabase (filtrando pelo nome)
+    let { data, error } = await supabase
+        .from("usuarios")
         .select("*")
-        .or(`nome.ilike.%${query}%, sobrenome.ilike.%${query}%`); // Pesquisa por nome ou sobrenome
+        .ilike("nome", `%${nomeBuscado}%`); // Busca aproximada (ignora maiúsculas e minúsculas)
 
     if (error) {
-        console.error("Erro ao buscar perfis:", error);
-        return [];
+        console.error("Erro na busca:", error);
+        document.getElementById("resultados").innerHTML = "<p>Erro ao buscar dados.</p>";
+        return;
     }
 
-    return data;
+    // 🔄 Exibir os resultados
+    if (data.length > 0) {
+        let html = data.map(perfil => `
+            <div class="perfil">
+                <h2>${perfil.nome} ${perfil.sobrenome || ""}</h2>
+                <p><strong>Cidade:</strong> ${perfil.cidade || "Não informado"}</p>
+                <p><strong>Estado:</strong> ${perfil.estado || "Não informado"}</p>
+                <p><strong>Escolaridade:</strong> ${perfil.escolaridade || "Não informado"}</p>
+            </div>
+        `).join("");
+        document.getElementById("resultados").innerHTML = html;
+    } else {
+        document.getElementById("resultados").innerHTML = "<p>Nenhum resultado encontrado.</p>";
+    }
 }
-document.getElementById("searchForm").addEventListener("submit", async function(event) {
-    event.preventDefault(); // Impede recarregamento da página
 
-    let query = document.getElementById("searchInput").value.trim();
-    let resultDiv = document.getElementById("results");
-    resultDiv.innerHTML = "<p>🔍 Buscando...</p>";
-
-    if (query !== "") {
-        const perfis = await buscarPerfis(query);
-        resultDiv.innerHTML = ""; // Limpa os resultados anteriores
-
-        if (perfis.length > 0) {
-            perfis.forEach(profile => {
-                resultDiv.innerHTML += `
-                    <div class="public.perfil">
-                        <img src="images/${profile.foto}" alt="${profile.nome}">
-                        <h2>${profile.nome} ${profile.sobrenome}</h2>
-                        <p><strong>Cidade:</strong> ${profile.cidade}, ${profile.estado}</p>
-                        <p><strong>Escolaridade:</strong> ${profile.escolaridade}</p>
-                        <p><strong>Cargo:</strong> ${profile.cargo}</p>
-                        <div class="social-links">
-                            <a href="${profile.facebook}" target="_blank">🔵 Facebook</a>
-                            <a href="${profile.instagram}" target="_blank">📷 Instagram</a>
-                            <a href="${profile.linkedin}" target="_blank">💼 LinkedIn</a>
-                        </div>
-                    </div>
-                `;
-            });
+// 🔄 Chamar a função ao carregar a página
+window.onload = buscarPerfil;
