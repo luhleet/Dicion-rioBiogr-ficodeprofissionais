@@ -1,9 +1,17 @@
-// Importar a biblioteca supabase-js
-import { createClient } from '@supabase/supabase-js'
+import { supabase } from "./db.js";
 
-const supabaseUrl = 'https://ssethvlmwzdoainknztb.supabase.co'
-const supabaseKey = process.env.SUPABASE_KEY
-const supabase = createClient(supabaseUrl, supabaseKey)
+async function buscarPerfis() {
+    const { data, error } = await supabase.from("perfis").select("*");
+
+    if (error) {
+        console.error("Erro ao buscar perfis:", error);
+        return;
+    }
+
+    console.log("Perfis encontrados:", data);
+}
+
+buscarPerfis();
 
 // Função para buscar perfis no Supabase
 async function buscarPerfis(query) {
