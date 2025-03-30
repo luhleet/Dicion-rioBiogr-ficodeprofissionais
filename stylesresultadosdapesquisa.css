@@ -1,0 +1,41 @@
+body {
+    font-family: Arial, sans-serif;
+    text-align: center;
+    background: linear-gradient(to right, rgb(204, 153, 255), rgb(179, 102, 255));
+    color: white;
+}
+
+.container {
+    margin-top: 50px;
+}
+
+input {
+    padding: 10px;
+    border-radius: 5px;
+    border: none;
+}
+
+button {
+    background: purple;
+    color: white;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+button:hover {
+    background: darkviolet;
+}
+
+#resultados {
+    margin-top: 20px;
+}
+
+.perfil {
+    background: white;
+    color: black;
+    padding: 15px;
+    margin: 10px;
+    border-radius: 5px;
+}
