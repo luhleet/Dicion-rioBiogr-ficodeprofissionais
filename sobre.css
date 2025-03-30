@@ -1,0 +1,106 @@
+/* Reset básico */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
+}
+
+/* Fundo em degradê lilás */
+body {
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background: linear-gradient(to right, rgb(204, 153, 255), rgb(179, 102, 255), rgb(153, 51, 255));
+    padding-top: 60px; /* Espaço para a barra de navegação */
+}
+
+/* Barra de navegação */
+nav {
+    width: 100%;
+    background-color: #6a0dad;
+    padding: 15px 0;
+    position: fixed;
+    top: 0;
+    left: 0;
+    text-align: center;
+}
+
+nav ul {
+    list-style: none;
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+}
+
+nav ul li {
+    display: inline;
+}
+
+nav ul li a {
+    color: white;
+    text-decoration: none;
+    font-size: 18px;
+    padding: 10px 15px;
+}
+
+nav ul li a:hover {
+    background-color: #4b0082;
+    border-radius: 5px;
+}
+
+/* Container principal */
+.about-container {
+    background: white;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    max-width: 600px;
+    text-align: center;
+}
+
+/* Foto da desenvolvedora */
+.developer-photo img {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid #6a0dad;
+    margin-bottom: 15px;
+}
+
+/* Texto sobre o projeto */
+.about-text {
+    margin-bottom: 20px;
+}
+
+.about-text h2 {
+    color: #6a0dad;
+    margin-bottom: 10px;
+}
+
+.about-text p {
+    font-size: 16px;
+    color: #333;
+    margin-bottom: 10px;
+}
+
+/* Informações de contato */
+.contact-info {
+    background: #f3e5ff;
+    padding: 15px;
+    border-radius: 8px;
+}
+
+.contact-info h3 {
+    color: #6a0dad;
+    margin-bottom: 10px;
+}
+
+.contact-info p {
+    font-size: 16px;
+    color: #333;
+    margin-bottom: 5px;
+}
