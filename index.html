@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UFT-8">
+        <meta hpp-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scalre=1.0">
+        <title> Dicionário Biográfico</title>
+        <link rel="stylesheet" href="index.css">
+        <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
+    </head>
+    <body>
+        <nav>
+            <ul>
+                <li>
+                    <a href="indexhtml.html">Pagina Inicial</a>     
+                        </a>
+                    </div>
+                </li>
+                <li>
+                    <a href="cadastro.html">Cadastro</a>
+                </li>
+                <li>
+                    <a href="about.html">Sobre</a>
+                </li>
+            </ul></nav>
+        </nav>
+    </head>
+    <body>
+    
+        <div class="search-container">
+            <h1>🔍 Pesquisa de Perfis</h1>
+            <form id="searchForm">
+                <input type="text" id="searchInput" placeholder="Digite um nome..." required>
+                <button type="submit">🔍</button>
+            </form>
+            <div id="results"></div>
+        </div>
+    
+        <script>
+            // Configuração do Supabase
+            const SUPABASE_URL = "https://ssethvlmwzdoainknztb.supabase.co";
+            const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNzZXRodmxtd3pkb2FpbmtuenRiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDI0OTEwMzksImV4cCI6MjA1ODA2NzAzOX0.pyI4BkggUm9DnAIXaeAqyN99ymMJ98s-PnGMyMBqZu4";
+            const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+    
+            document.getElementById("searchForm").addEventListener("submit", async function(event) {
+                event.preventDefault();
+                let query = document.getElementById("searchInput").value.trim();
+    
+                if (query !== "") {
+                    // Buscar perfis no Supabase filtrando por nome ou sobrenome
+                    const { data, error } = await supabase
+                        .from("perfis")
+                        .select("*")
+                        .or(`nome.ilike.%${query}%, sobrenome.ilike.%${query}%`);
+    
+                    let resultDiv = document.getElementById("results");
+                    resultDiv.innerHTML = "";
+    
+                    if (error) {
+                        resultDiv.innerHTML = "<p>Erro ao buscar perfis.</p>";
+                        console.error(error);
+                        return;
+                    }
+    
+                    if (data.length > 0) {
+                        data.forEach(profile => {
+                            resultDiv.innerHTML += `
+                                <div class="profile-card">
+                                    <img src="images/${profile.foto}" alt="${profile.nome}">
+                                    <h2>${profile.nome} ${profile.sobrenome}</h2>
+                                    <p><strong>Cidade:</strong> ${profile.cidade}, ${profile.estado}</p>
+                                    <p><strong>Escolaridade:</strong> ${profile.escolaridade}</p>
+                                    <p><strong>Cargo:</strong> ${profile.cargo}</p>
+                                    <div class="social-links">
+                                        <a href="${profile.facebook}" target="_blank">🔵 Facebook</a>
+                                        <a href="${profile.instagram}" target="_blank">📷 Instagram</a>
+                                        <a href="${profile.linkedin}" target="_blank">💼 LinkedIn</a>
+                                    </div>
+                                </div>
+                            `;
+                        });
+                    } else {
+                        resultDiv.innerHTML = "<p>Nenhum perfil encontrado.</p>";
+                    }
+                }
+            });
+        </script>
+    
+    </body>
+    </html>
