@@ -23,7 +23,17 @@
         <input type="text" id="searchInput" placeholder="Digite um nome...">
         <button onclick="buscarPerfil()"><i class="fas fa-search"></i></button>
     </div>
+<script>
+        document.getElementById("searchButton").addEventListener("click", function() {
+            const nome = document.getElementById("searchInput").value.trim();
+            if (nome !== "") {
+                window.location.href = `pesquisa.html?nome=${encodeURIComponent(nome)}`;
+            }
+        });
+    </script>
 
+</body>
+</html>
     <script src="script.js"></script>
 </body>
 </html>
