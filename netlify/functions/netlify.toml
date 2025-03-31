@@ -1,0 +1,6 @@
+[build]
+  command = "npm run build"
+  publish = "build"  # ou "public" dependendo da sua estrutura
+
+[functions]
+  node_bundler = "esbuild"
