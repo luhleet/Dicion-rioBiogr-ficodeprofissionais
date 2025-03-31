@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Página de Perfil</title>
+  <link rel="stylesheet" href="stylesperfil.css">
+</head>
+<body>
+  <div class="profile-container">
+    <div class="profile-header">
+      <img src="" alt="Foto de Perfil" id="profilePic" class="profile-pic">
+      <div class="profile-info">
+        <h1 id="name">Nome</h1>
+        <p id="bio">Bio</p>
+        <p id="location">Localização</p>
+        <p id="age">Idade</p>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Função para carregar os dados do perfil
+    fetch('/api/profile')
+      .then(response => response.json())
+      .then(data => {
+        document.getElementById('name').textContent = data.name;
+        document.getElementById('bio').textContent = data.bio;
+        document.getElementById('location').textContent = data.location;
+        document.getElementById('age').textContent = `Idade: ${data.age}`;
+        document.getElementById('profilePic').src = data.profilePicUrl;
+      })
+      .catch(error => console.error('Erro ao carregar dados:', error));
+  </script>
+</body>
+</html>
