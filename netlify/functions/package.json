@@ -1,2 +1,5 @@
-npm init -y
 npm install express @supabase/supabase-js
+"dependencies": {
+  "@supabase/supabase-js": "^2.0.0",
+  ...
+}
