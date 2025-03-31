@@ -29,11 +29,18 @@
             if (nome !== "") {
                 window.location.href = `pesquisa.html?nome=${encodeURIComponent(nome)}`;
             }
+            fetch('/.netlify/functions/getData')
+  .then(response => response.json())
+  .then(data => {
+    console.log(data); // Exibe os dados no console
+  })
+  .catch(error => {
+    console.error('Erro ao buscar dados:', error);
+  });
         });
     </script>
 
 </body>
 </html>
-    <script src="script.js"></script>
 </body>
 </html>
