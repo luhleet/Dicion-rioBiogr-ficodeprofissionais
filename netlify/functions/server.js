@@ -2,8 +2,8 @@ onst express = require('express');
 const { createClient } = require('@supabase/supabase-js');
 
 // Configurar o cliente Supabase
-const supabaseUrl = 'https://seu-project-id.supabase.co'; // URL do Supabase
-const supabaseKey = 'sua-chave-secreta'; // Sua chave secreta
+const supabaseUrl = 'https://ssethvlmwzdoainknztb.supabase.co'; // URL do Supabase
+const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNzZXRodmxtd3pkb2FpbmtuenRiIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc0MjQ5MTAzOSwiZXhwIjoyMDU4MDY3MDM5fQ.ZezYulhziaF5MqVb6ec0FApCanWC7J0vFhkKqYhWyg4'; // Sua chave secreta
 const supabase = createClient(supabaseUrl, supabaseKey);
 
 const app = express();
