@@ -24,27 +24,19 @@
         <button onclick="buscarPerfil()"><i class="fas fa-search"></i></button>
         <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
     </div>
-<script>
-        document.getElementById("searchButton").addEventListener("click", function() {
-            const nome = document.getElementById("searchInput").value.trim();
-            if (nome !== "") {
-                window.location.href = `pesquisa.html?nome=${encodeURIComponent(nome)}`;
-            }
-            fetch('/.netlify/functions/getData')
-  .then(response => response.json())
-  .then(data => {
-    console.log(data); // Exibe os dados no console
-  })
-  .catch(error => {
-    console.error('Erro ao buscar dados:', error);
-  });
-        });
-    <div id="results">
-        <!-- Os resultados da pesquisa serão exibidos aqui -->
-    </div>
-
-    <script src="app.js"></script>
-    </script>
+ <script>
+    function search() {
+      const query = document.getElementById('searchQuery').value;
+      if (query.trim() !== '') {
+        // Aqui, você pode configurar a URL de destino com a query
+        // Exemplo de URL: www.exemplo.com/resultados?q=termo_de_busca
+        const url = `resultados.html?q=${encodeURIComponent(query)}`;
+        window.location.href = url; // Redireciona para a página de resultados
+      } else {
+        alert("Por favor, digite um termo de pesquisa.");
+      }
+    }
+  </script
 
 </body>
 </html>
