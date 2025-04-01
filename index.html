@@ -22,6 +22,7 @@
     <div class="search-container">
         <input type="text" id="searchInput" placeholder="Digite um nome...">
         <button onclick="buscarPerfil()"><i class="fas fa-search"></i></button>
+        <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
     </div>
 <script>
         document.getElementById("searchButton").addEventListener("click", function() {
@@ -38,6 +39,11 @@
     console.error('Erro ao buscar dados:', error);
   });
         });
+    <div id="results">
+        <!-- Os resultados da pesquisa serão exibidos aqui -->
+    </div>
+
+    <script src="app.js"></script>
     </script>
 
 </body>
