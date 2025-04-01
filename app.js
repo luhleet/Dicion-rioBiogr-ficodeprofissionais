@@ -9,7 +9,7 @@ const supabase = supabase.createClient(supabaseUrl, supabaseKey);
 // Função para realizar a pesquisa
 async function searchDatabase(query) {
     const { data, error } = await supabase
-        .from('perfil') // Substitua 'sua_tabela' pelo nome da sua tabela
+        .from('public.perfil') // Substitua 'sua_tabela' pelo nome da sua tabela
         .select('*')
         .ilike('nome', `%${query}%`); // Substitua 'campo_a_ser_pesquisado' pelo nome do campo que será pesquisado
 
