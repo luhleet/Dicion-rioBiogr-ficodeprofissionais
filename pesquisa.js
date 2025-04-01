@@ -18,7 +18,7 @@ export async function handler(event) {
 
         // Buscar dados no Supabase
         const { data, error } = await supabase
-            .from('Perfil') // Substitua pelo nome real da sua tabela
+            .from('sua_tabela') // Substitua pelo nome real da sua tabela
             .select('*')
             .ilike('nome', `%${query}%`); // Busca pelo nome (altere para o campo correto)
 
