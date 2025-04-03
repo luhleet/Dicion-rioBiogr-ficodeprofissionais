@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Página Inicial</title>
+    <link rel="stylesheet" href="index.css">
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+</head>
+<body>
+
+    <!-- Barra de Navegação -->
+    <nav>
+        <ul>
+            <li><a href="index.html"><i class="fas fa-home"></i> Página Inicial</a></li>
+            <li><a href="cadastro.html"><i class="fas fa-user-plus"></i> Cadastro</a></li>
+            <li><a href="sobre.html"><i class="fas fa-info-circle"></i> Sobre</a></li>
+        </ul>
+    </nav>
+
+    <!-- Container da Pesquisa -->
+    <div class="search-container">
+        <input type="text" id="searchInput" placeholder="Digite um nome...">
+        <button onclick="buscarPerfil()"><i class="fas fa-search"></i></button>
+    </div>
+    <ul id="resultado"></ul>
+<script>
+        async function buscarPerfil() {
+            const nome = document.getElementById('searchInput').value; // Fixed ID reference
+            const response = await fetch('/.netlify/functions/buscarDados', {
+                method: 'POST',
+                body: JSON.stringify({ nome }),
+                headers: { 'Content-Type': 'application/json' }
+            });
+
+            const data = await response.json();
+            document.getElementById('resultado').innerHTML = data.map(
+                usuario => `<li>${usuario.nome} - ${usuario.email}</li>`
+            ).join('');
+        }
+    </script>
+</body>
+</html>
