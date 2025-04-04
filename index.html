@@ -19,25 +19,14 @@
     </nav>
 
     <!-- Container da Pesquisa -->
-    <div class="search-container">
-        <input type="text" id="searchInput" placeholder="Digite um nome...">
-        <button onclick="buscarPerfil()"><i class="fas fa-search"></i></button>
+    
+<body>
+    <div class="container">
+        <h1>Buscar</h1>
+        <form action="resultadosdapesquisa.html" method="get">
+            <input type="text" name="q" placeholder="Digite sua pesquisa...">
+            <button type="submit">Pesquisar</button>
+        </form>
     </div>
-    <ul id="resultado"></ul>
-<script>
-        async function buscarPerfil() {
-            const nome = document.getElementById('searchInput').value; // Fixed ID reference
-            const response = await fetch('/.netlify/functions/buscarDados', {
-                method: 'POST',
-                body: JSON.stringify({ nome }),
-                headers: { 'Content-Type': 'application/json' }
-            });
-
-            const data = await response.json();
-            document.getElementById('resultado').innerHTML = data.map(
-                usuario => `<li>${usuario.nome} - ${usuario.email}</li>`
-            ).join('');
-        }
-    </script>
 </body>
 </html>
