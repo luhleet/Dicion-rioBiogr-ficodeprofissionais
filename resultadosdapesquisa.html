@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Resultados de Pesquisa</title>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            color: #333;
+        }
+        
+        header {
+            margin-bottom: 30px;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 20px;
+        }
+        
+        h1 {
+            color: #444;
+        }
+        
+        .search-box {
+            display: flex;
+            margin-bottom: 20px;
+        }
+        
+        .search-box input {
+            flex: 1;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px 0 0 4px;
+            font-size: 16px;
+        }
+        
+        .search-box button {
+            padding: 10px 20px;
+            background-color: #3b82f6;
+            color: white;
+            border: none;
+            border-radius: 0 4px 4px 0;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        
+        .search-box button:hover {
+            background-color: #2563eb;
+        }
+        
+        .results-container {
+            margin-top: 30px;
+        }
+        
+        .result-item {
+            margin-bottom: 30px;
+            padding: 20px;
+            border: 1px solid #eee;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+        
+        .result-item h2 {
+            margin-top: 0;
+            color: #1e40af;
+        }
+        
+        .result-item a {
+            color: #1e40af;
+            text-decoration: none;
+        }
+        
+        .result-item a:hover {
+            text-decoration: underline;
+        }
+        
+        .result-snippet {
+            color: #666;
+        }
+        
+        .pagination {
+            display: flex;
+            justify-content: center;
+            margin-top: 40px;
+        }
+        
+        .pagination button {
+            margin: 0 5px;
+            padding: 8px 12px;
+            background-color: #f3f4f6;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        
+        .pagination button.active {
+            background-color: #3b82f6;
+            color: white;
+            border-color: #3b82f6;
+        }
+        
+        .loading {
+            text-align: center;
+            padding: 20px;
+            color: #666;
+        }
+        
+        .no-results {
+            text-align: center;
+            padding: 40px;
+            color: #666;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Resultados de Pesquisa</h1>
+        <div class="search-box">
+            <input type="text" id="searchInput" placeholder="Digite sua pesquisa..." value="">
+            <button onclick="performSearch()">Pesquisar</button>
+        </div>
+    </header>
+    
+    <div class="results-container" id="resultsContainer">
+        <div class="loading" id="loadingIndicator" style="display: none;">
+            Carregando resultados...
+        </div>
+        <div id="resultsList"></div>
+    </div>
+    
+    <div class="pagination" id="pagination" style="display: none;">
+        <button id="prevPage" onclick="changePage(-1)">Anterior</button>
+        <span id="pageInfo">Página 1</span>
+        <button id="nextPage" onclick="changePage(1)">Próxima</button>
+    </div>
+
+    <script>
+        // Configuração do Supabase
+        const supabaseUrl = 'https://ssethvlmwzdoainknztb.supabase.co';
+        const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNzZXRodmxtd3pkb2FpbmtuenRiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDI0OTEwMzksImV4cCI6MjA1ODA2NzAzOX0.pyI4BkggUm9DnAIXaeAqyN99ymMJ98s-PnGMyMBqZu4';
+        const supabase = supabase.createClient(supabaseUrl, supabaseKey);
+        
+        // Variáveis de estado
+        let currentPage = 1;
+        const itemsPerPage = 10;
+        let lastSearchTerm = '';
+        let totalResults = 0;
+        
+        // Função para executar a pesquisa
+        async function performSearch() {
+            const searchTerm = document.getElementById('searchInput').value.trim();
+            
+            if (!searchTerm) {
+                alert('Por favor, digite um termo de pesquisa');
+                return;
+            }
+            
+            lastSearchTerm = searchTerm;
+            currentPage = 1;
+            
+            await fetchResults(searchTerm, currentPage);
+        }
+        
+        // Função para buscar resultados do Supabase
+        async function fetchResults(searchTerm, page) {
+            const resultsList = document.getElementById('resultsList');
+            const loadingIndicator = document.getElementById('loadingIndicator');
+            const pagination = document.getElementById('pagination');
+            
+            // Mostrar indicador de carregamento
+            resultsList.innerHTML = '';
+            loadingIndicator.style.display = 'block';
+            pagination.style.display = 'none';
+            
+            try {
+                // Calcular offset para paginação
+                const offset = (page - 1) * itemsPerPage;
+                
+                // Buscar dados no Supabase
+                // Substitua 'tabela_itens' pelo nome da sua tabela
+                // e ajuste os campos conforme sua estrutura
+                const { data, error, count } = await supabase
+                    .from('tabela_itens')
+                    .select('id, titulo, descricao, url', { count: 'exact' })
+                    .or(`titulo.ilike.%${searchTerm}%,descricao.ilike.%${searchTerm}%`)
+                    .range(offset, offset + itemsPerPage - 1);
+                
+                if (error) throw error;
+                
+                totalResults = count;
+                
+                // Esconder indicador de carregamento
+                loadingIndicator.style.display = 'none';
+                
+                if (!data || data.length === 0) {
+                    resultsList.innerHTML = `
+                        <div class="no-results">
+                            <h3>Nenhum resultado encontrado para "${searchTerm}"</h3>
+                            <p>Tente usar termos diferentes ou mais genéricos.</p>
+                        </div>
+                    `;
+                    return;
+                }
+                
+                // Exibir resultados
+                let html = '';
+                data.forEach(item => {
+                    html += `
+                        <div class="result-item">
+                            <h2><a href="${item.url}" target="_blank">${item.titulo}</a></h2>
+                            <p class="result-snippet">${item.descricao}</p>
+                        </div>
+                    `;
+                });
+                
+                resultsList.innerHTML = html;
+                
+                // Atualizar paginação
+                updatePagination();
+                
+            } catch (error) {
+                console.error('Erro ao buscar dados:', error);
+                loadingIndicator.style.display = 'none';
+                resultsList.innerHTML = `
+                    <div class="no-results">
+                        <h3>Ocorreu um erro ao buscar os resultados</h3>
+                        <p>Por favor, tente novamente mais tarde.</p>
+                    </div>
+                `;
+            }
+        }
+        
+        // Função para atualizar controles de paginação
+        function updatePagination() {
+            const pagination = document.getElementById('pagination');
+            const pageInfo = document.getElementById('pageInfo');
+            const prevPageBtn = document.getElementById('prevPage');
+            const nextPageBtn = document.getElementById('nextPage');
+            
+            if (totalResults <= itemsPerPage) {
+                pagination.style.display = 'none';
+                return;
+            }
+            
+            pagination.style.display = 'flex';
+            pageInfo.textContent = `Página ${currentPage} de ${Math.ceil(totalResults / itemsPerPage)}`;
+            
+            prevPageBtn.disabled = currentPage === 1;
+            nextPageBtn.disabled = currentPage === Math.ceil(totalResults / itemsPerPage);
+        }
+        
+        // Função para mudar de página
+        function changePage(direction) {
+            const newPage = currentPage + direction;
+            const totalPages = Math.ceil(totalResults / itemsPerPage);
+            
+            if (newPage < 1 || newPage > totalPages) return;
+            
+            currentPage = newPage;
+            fetchResults(lastSearchTerm, currentPage);
+        }
+        
+        // Permitir pesquisa ao pressionar Enter
+        document.getElementById('searchInput').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                performSearch();
+            }
+        });
+        
+        // Opcional: executar pesquisa ao carregar a página se houver parâmetro na URL
+        document.addEventListener('DOMContentLoaded', function() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const searchParam = urlParams.get('q');
+            
+            if (searchParam) {
+                document.getElementById('searchInput').value = searchParam;
+                performSearch();
+            }
+        });
+    </script>
+</body>
+</html>
