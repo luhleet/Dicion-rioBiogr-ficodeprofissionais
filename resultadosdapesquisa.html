@@ -184,9 +184,9 @@
                 // Substitua 'tabela_itens' pelo nome da sua tabela
                 // e ajuste os campos conforme sua estrutura
                 const { data, error, count } = await supabase
-                    .from('tabela_itens')
-                    .select('id, titulo, descricao, url', { count: 'exact' })
-                    .or(`titulo.ilike.%${searchTerm}%,descricao.ilike.%${searchTerm}%`)
+                    .from('perfil')
+                    .select('nome, sobrenome, escolaridade, crb', { count: 'exact' })
+                    .or(`nome.ilike.%${searchTerm}%,descricao.ilike.%${searchTerm}%`)
                     .range(offset, offset + itemsPerPage - 1);
                 
                 if (error) throw error;
